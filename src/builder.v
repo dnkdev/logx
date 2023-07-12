@@ -72,7 +72,7 @@ pub fn from_new[T](log T) !&T {
 				ofiles << &logger.$(field.name).ofile
 				chanells << &logger.$(field.name).ch
 
-				spawn listen_file_channel(mut logger, logger.$(field.name).ch, logger.$(field.name).priority)
+				spawn listen_file_channel(mut &logger.$(field.name))
 			}
 			i++
 		}

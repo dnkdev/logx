@@ -3,26 +3,20 @@ module logx
 import time
 import os
 
-fn listen_file_channel[T](mut logger T ,ch chan string, prior int) {
+fn listen_file_channel(mut log_info LevelInfo) {
 	for {
-		t := <-ch or {
+		t := <-log_info.ch or {
 			break
 		}
 		$if logx_console ? {
 			println(t)
 		}
 		repeat:
-		$for field in T.fields {
-			$if field.typ is LevelInfo {
-				if logger.$(field.name).priority == prior {
-					logger.$(field.name).ofile.writeln(t) or {
-						eprintln(@MOD + ' listen_file_channel: ' + err.str() + '\n    ' + t)
-						time.sleep(3*time.second)
-						unsafe {
-							goto repeat
-						}
-					}
-				}
+		log_info.ofile.writeln(t) or {
+			eprintln(@MOD + ' listen_file_channel: ' + err.str() + '\n    ' + t)
+			time.sleep(3*time.second)
+			unsafe {
+				goto repeat
 			}
 		}
 	}
