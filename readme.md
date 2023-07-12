@@ -5,13 +5,13 @@ My small library for easier custom logging implementation. File logging.<br>
 - [x] daily rotation
 - [x] filesize rotation
 
-Example implementation (daily rotation, filesize rotation): look at code:
+Example implementation (daily rotation, filesize rotation):
 <a href="https://github.com/dnkdev/logx/tree/master/prebuilt">filelog</a><br>
 Daily   : `import logx.prebuilt.daily.filelog` <br>
 Filesize: `import logx.prebuilt.filesize.filelog`<br>
 
 ```v
-import logx.prebuilt.size.filelog
+import logx.prebuilt.filesize.filelog
 
 //...
     mut logger := filelog.new()!
