@@ -11,7 +11,7 @@ pub fn from_new[T](log T) !&T {
 	mut chanells := []&chan string{}
 	mut rotation := ''
 	mut has_log_day := false
-	// check rotation set
+	// check rotation attribute set
 	$for attr in T.attributes {
 		$if attr.name == 'rotation' && attr.has_arg {
 			rotation = attr.arg
@@ -42,9 +42,8 @@ pub fn from_new[T](log T) !&T {
 				logger.$(field.name).file_path = get_daily_file_path(logger.$(field.name).file_path)
 			}
 			else if rotation == 'filesize' {
-				max_size := get_attr('max_size', field.attrs)!
-				max_size_u64 := max_size.all_before('MB').u64()
-				logger.$(field.name).max_size = 1024*1024*max_size_u64
+				max_size := get_attr('max_size', field.attrs)!.all_before('MB').u64()
+				logger.$(field.name).max_size = 1024*1024*max_size
 				if logger.$(field.name).max_size == 0 {
 					panic('file max size can\'t be 0')
 				}
@@ -96,6 +95,7 @@ fn create_logger_dir_path(file_path string) {
 		}
 	}
 }
+
 fn get_attr(a string, attrs []string) !string{
 	for attr in attrs {
 		keys := attr.split(':')

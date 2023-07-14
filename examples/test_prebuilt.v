@@ -2,9 +2,8 @@ module main
 
 import log
 import time
-//import logx.prebuilt.filesize.filelog
-import logx.prebuilt.daily.filelog
-
+import logx.prebuilt.filesize.filelog
+//import logx.prebuilt.daily.filelog
 
 fn start_vlog(repeats int) string{
 	mut vlog := log.Log{}

@@ -14,7 +14,7 @@ pub mut:
 	error_    logx.LevelInfo [cap: 1000; file: 'logs/error/error.log']
 	fatal_    logx.LevelInfo [cap: 1; file: 'logs/fatal/fatal.log']
 	log_level int
-	log_day  int // should be if [rotation: 'daily'] set
+	log_day  int // should be if [rotation: 'daily'] is set
 }
 
 pub enum LogLevel {
