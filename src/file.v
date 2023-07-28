@@ -11,8 +11,16 @@ fn listen_file_channel(mut log_info LevelInfo) {
 		$if logx_console ? {
 			println(t)
 		}
+		
+		repeat:
 		log_info.ofile.writeln(t) or {
 			eprintln(@MOD + ' ' + @FN + ': ' + err.str() + '\n     ' + t)
+			if err is os.FileNotOpenedError{
+				time.sleep(1 * time.second)
+				unsafe {
+					goto repeat
+				}
+			}
 		}
 	}
 }

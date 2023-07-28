@@ -3,7 +3,7 @@ module logx
 import os
 import time
 
-pub type FormatterFunc = fn  (string, string) string
+pub type FormatterFunc = fn (string, string) string
 
 [inline]
 pub fn default_formatter(s string, tag string) string {

@@ -4,7 +4,6 @@ import os
 import time
 
 fn rotate_daily_files[T](mut logger T)!{
-	println('rotate daily')
 	$for field in T.fields {
 		$if field.is_struct {
 			$if field.typ is LevelInfo{

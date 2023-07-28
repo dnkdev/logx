@@ -2,8 +2,8 @@ module main
 
 import log
 import time
-import logx.prebuilt.filesize.filelog
-//import logx.prebuilt.daily.filelog
+// import logx.filelog.daily as filelog
+import logx.filelog.filesize as filelog
 
 fn start_vlog(repeats int) string{
 	mut vlog := log.Log{}
@@ -35,8 +35,8 @@ fn start_logx(repeats int)! string {
 
 fn main(){
 	mut repeats := 10000
-	txt_logx := start_logx(repeats)!
 	txt_vlog := start_vlog(repeats)
+	txt_logx := start_logx(repeats)!
 	
 
 	C.atexit(

@@ -6,16 +6,17 @@ My small library for easier custom logging implementation. File logging.<br>
 - [x] filesize rotation
 
 Example implementation (daily rotation, filesize rotation):
-<a href="https://github.com/dnkdev/logx/tree/master/prebuilt">filelog</a><br>
-Daily   : `import logx.prebuilt.daily.filelog` <br>
-Filesize: `import logx.prebuilt.filesize.filelog`<br>
+<a href="https://github.com/dnkdev/logx/tree/master/filelog">filelog</a><br>
+Daily   : `import logx.filelog.daily` <br>
+Filesize: `import logx.filelog.filesize`<br>
 
 ```v
-import logx.prebuilt.filesize.filelog
+import logx.filelog.filesize as log
 
 //...
-    mut logger := filelog.new()!
+    mut logger := log.new()!
     logger.set_level(.trace)
+    
     logger.trace('Some text')
     logger.debug('Some text')
     logger.info('Some text')
@@ -25,7 +26,7 @@ import logx.prebuilt.filesize.filelog
     logger.error('Some text')
     logger.fatal('Some text') // panic
 
-    logger.wait() // call wait if the program can exit before all writes are done
+    logger.wait() 
 ```
 
 ##

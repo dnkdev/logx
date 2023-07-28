@@ -3,7 +3,7 @@ module logx
 import os
 import time
 
-// from_new create logger from user struct
+// from_new create logger from custom struct
 pub fn from_new[T](log T) !&T {
 	mut logger := &T{}
 	mut paths := []string{}
@@ -51,7 +51,7 @@ pub fn from_new[T](log T) !&T {
 			path := logger.$(field.name).file_path
 
 			create_logger_dir_path(path)
-			
+
 			if logger.$(field.name).file_path in paths {
 				//println('same file ${path}')
 				for a, ofile in ofiles {
@@ -80,7 +80,7 @@ pub fn from_new[T](log T) !&T {
 
 }
 
-// create_logger_dir_path create directories if they are in file path: 
+// create_logger_dir_path create directories if they are in file path:
 // from "file: 'logs/trace/trace.log'" - create "logs" and "trace" directories
 fn create_logger_dir_path(file_path string) {
 	mut dir := file_path
