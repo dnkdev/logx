@@ -24,6 +24,7 @@ fn start_logx(repeats int)! string {
 	logger.set_level(.trace)
 	dump(logger)
 	bench := time.ticks()
+	logger.set_level_max_size(.trace, 2 * 1024 * 1024)
 	for i in 0..repeats {
 		logger.trace('Some text ${i}')
 		logger.debug('Some text ${i}')

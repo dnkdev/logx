@@ -3,7 +3,7 @@ module filesize
 import logx
 
 [rotation: 'filesize']
-pub struct PrebuiltFileLog {
+pub struct FileLog {
 pub mut:
 	trace_    logx.LevelInfo [max_size: '1MB'; cap: 10000; file: 'logs/trace/trace.log']
 	debug_    logx.LevelInfo [max_size: '1MB'; cap: 9000; file: 'logs/debug/debug.log']
@@ -27,15 +27,27 @@ pub enum LogLevel {
 	fatal
 }
 
-pub fn (mut l PrebuiltFileLog) wait() {
+pub fn (mut l FileLog) wait() {
 	logx.wait(mut l)
 }
 
-pub fn (mut l PrebuiltFileLog) set_level(level LogLevel) {
+pub fn (mut l FileLog) set_level(level LogLevel) {
 	l.log_level = int(level)
 }
 
-pub fn (mut l PrebuiltFileLog) trace(s string) {
+pub fn (mut l FileLog) set_level_max_size(level LogLevel, max_size u64) {
+	$for field in FileLog.fields {
+		$if field.is_struct {
+			$if field.typ is logx.LevelInfo {
+				if l.$(field.name).priority == int(level) {
+					l.$(field.name).max_size = max_size
+				}
+			}
+		}
+	}
+}
+
+pub fn (mut l FileLog) trace(s string) {
 	if l.log_level > int(LogLevel.trace) {
 		return
 	}
@@ -43,7 +55,7 @@ pub fn (mut l PrebuiltFileLog) trace(s string) {
 	l.trace_.ch <- l.trace_.formatter(s, 'TRACE')
 }
 
-pub fn (mut l PrebuiltFileLog) debug(s string) {
+pub fn (mut l FileLog) debug(s string) {
 	if l.log_level > int(LogLevel.debug) {
 		return
 	}
@@ -51,7 +63,7 @@ pub fn (mut l PrebuiltFileLog) debug(s string) {
 	l.debug_.ch <- l.debug_.formatter(s, 'DEBUG')
 }
 
-pub fn (mut l PrebuiltFileLog) info(s string) {
+pub fn (mut l FileLog) info(s string) {
 	if l.log_level > int(LogLevel.info) {
 		return
 	}
@@ -59,7 +71,7 @@ pub fn (mut l PrebuiltFileLog) info(s string) {
 	l.info_.ch <- l.info_.formatter(s, 'INFO ')
 }
 
-pub fn (mut l PrebuiltFileLog) note(s string) {
+pub fn (mut l FileLog) note(s string) {
 	if l.log_level > int(LogLevel.note) {
 		return
 	}
@@ -67,7 +79,7 @@ pub fn (mut l PrebuiltFileLog) note(s string) {
 	l.note_.ch <- l.note_.formatter(s, 'NOTE ')
 }
 
-pub fn (mut l PrebuiltFileLog) warn(s string) {
+pub fn (mut l FileLog) warn(s string) {
 	if l.log_level > int(LogLevel.warn) {
 		return
 	}
@@ -75,7 +87,7 @@ pub fn (mut l PrebuiltFileLog) warn(s string) {
 	l.warn_.ch <- l.warn_.formatter(s, 'WARN ')
 }
 
-pub fn (mut l PrebuiltFileLog) alert(s string) {
+pub fn (mut l FileLog) alert(s string) {
 	if l.log_level > int(LogLevel.alert) {
 		return
 	}
@@ -83,7 +95,7 @@ pub fn (mut l PrebuiltFileLog) alert(s string) {
 	l.alert_.ch <- l.alert_.formatter(s, 'ALERT')
 }
 
-pub fn (mut l PrebuiltFileLog) error(s string) {
+pub fn (mut l FileLog) error(s string) {
 	if l.log_level > int(LogLevel.error) {
 		return
 	}
@@ -91,7 +103,7 @@ pub fn (mut l PrebuiltFileLog) error(s string) {
 	l.error_.ch <- l.error_.formatter(s, 'ERROR')
 }
 
-pub fn (mut l PrebuiltFileLog) fatal(s string) {
+pub fn (mut l FileLog) fatal(s string) {
 	if l.log_level > int(LogLevel.fatal) {
 		return
 	}
@@ -101,6 +113,6 @@ pub fn (mut l PrebuiltFileLog) fatal(s string) {
 	panic(s)
 }
 
-pub fn new() !&PrebuiltFileLog {
-	return logx.from_new(PrebuiltFileLog{})!
+pub fn new() !&FileLog {
+	return logx.from_new(FileLog{})!
 }
