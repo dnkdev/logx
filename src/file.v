@@ -45,3 +45,7 @@ pub fn wait_level(mut log_level LevelInfo){
 		continue
 	}
 }
+
+pub fn (mut level LevelInfo) flush() {
+	level.ofile.flush()
+}

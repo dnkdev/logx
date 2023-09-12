@@ -36,6 +36,17 @@ pub fn (mut l FileLog) set_level(level LogLevel) {
 	l.log_level = int(level)
 }
 
+pub fn (mut l FileLog) flush() {
+	l.trace_.ofile.flush()
+	l.debug_.ofile.flush()
+	l.info_.ofile.flush()
+	l.note_.ofile.flush()
+	l.warn_.ofile.flush()
+	l.alert_.ofile.flush()
+	l.error_.ofile.flush()
+	l.fatal_.ofile.flush()
+}
+
 pub fn (mut l FileLog) trace(s string) {
 	if l.log_level > int(LogLevel.trace) {
 		return
