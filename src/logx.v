@@ -2,6 +2,7 @@ module logx
 
 import os
 import time
+import sync
 
 pub type FormatterFunc = fn (string, string) string
 pub type WorkerFunc = fn (mut LevelInfo)
@@ -16,6 +17,7 @@ pub struct LevelInfo{
 pub mut:
 	formatter	FormatterFunc = default_formatter
 	worker		WorkerFunc = listen_file_channel
+	wg			&sync.WaitGroup = sync.new_waitgroup()
 	ofile		os.File
 	ch			chan string
 	file_path	string

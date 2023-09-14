@@ -31,6 +31,7 @@ fn start_logx(repeats int)! string {
 		logger.info('Some text ${i}')
 		logger.note('Some text ${i}')
 	}
+	logger.wait_all()
 	return 'logX Time: ${time.ticks() - bench}ms'
 }
 
