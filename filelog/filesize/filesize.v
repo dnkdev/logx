@@ -35,7 +35,7 @@ pub fn (mut l FileLog) set_level(level LogLevel) {
 	l.log_level = int(level)
 }
 
-pub fn (mut l FileLog) flush() {
+pub fn (mut l FileLog) flush_all() {
 	l.trace_.ofile.flush()
 	l.debug_.ofile.flush()
 	l.info_.ofile.flush()
@@ -44,6 +44,34 @@ pub fn (mut l FileLog) flush() {
 	l.alert_.ofile.flush()
 	l.error_.ofile.flush()
 	l.fatal_.ofile.flush()
+}
+pub fn (mut l FileLog) flush(level LogLevel) {
+	match level {
+		.trace {
+			l.trace_.ofile.flush()
+		}
+		.debug {
+			l.debug_.ofile.flush()
+		}
+		.info {
+			l.info_.ofile.flush()
+		}
+		.note {
+			l.note_.ofile.flush()
+		}
+		.warn {
+			l.warn_.ofile.flush()
+		}
+		.alert {
+			l.alert_.ofile.flush()
+		}
+		.error {
+			l.error_.ofile.flush()
+		}
+		.fatal {
+			l.fatal_.ofile.flush()
+		}
+	}
 }
 
 pub fn (mut l FileLog) set_level_max_size(level LogLevel, max_size u64) {
