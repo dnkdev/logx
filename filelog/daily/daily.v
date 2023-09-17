@@ -5,16 +5,16 @@ import logx
 [rotation: 'daily']
 pub struct FileLog {
 pub mut:
-	trace_    logx.LevelInfo [cap: 10000; file: 'logs/trace/trace.log']
-	debug_    logx.LevelInfo [cap: 9000; file: 'logs/debug/debug.log']
-	info_     logx.LevelInfo [cap: 8000; file: 'logs/info/info.log']
-	note_     logx.LevelInfo [cap: 7000; file: 'logs/note/note.log']
-	warn_     logx.LevelInfo [cap: 1000; file: 'logs/warn/warn.log']
-	alert_    logx.LevelInfo [cap: 1000; file: 'logs/alert/alert.log']
-	error_    logx.LevelInfo [cap: 1000; file: 'logs/error/error.log']
-	fatal_    logx.LevelInfo [cap: 1; file: 'logs/fatal/fatal.log']
+	trace_    logx.LevelInfo [cap: 10000; file: 'logs/trace.log']
+	debug_    logx.LevelInfo [cap: 9000; file: 'logs/debug.log']
+	info_     logx.LevelInfo [cap: 8000; file: 'logs/info.log']
+	note_     logx.LevelInfo [cap: 7000; file: 'logs/note.log']
+	warn_     logx.LevelInfo [cap: 1000; file: 'logs/warn.log']
+	alert_    logx.LevelInfo [cap: 1000; file: 'logs/alert.log']
+	error_    logx.LevelInfo [cap: 1000; file: 'logs/error.log']
+	fatal_    logx.LevelInfo [cap: 1; file: 'logs/fatal.log']
 	log_level int
-	log_day  int // should be if [rotation: 'daily'] is set
+	log_day   int // should be if [rotation: 'daily'] is set
 }
 
 pub enum LogLevel {
@@ -39,28 +39,28 @@ pub fn (mut l FileLog) wait_all() {
 pub fn (mut l FileLog) wait(level LogLevel) {
 	match level {
 		.trace {
-			l.trace_.wg.wait() 
+			l.trace_.wg.wait()
 		}
 		.debug {
-			l.debug_.wg.wait() 
+			l.debug_.wg.wait()
 		}
 		.info {
-			l.info_.wg.wait() 
+			l.info_.wg.wait()
 		}
 		.note {
-			l.note_.wg.wait() 
+			l.note_.wg.wait()
 		}
 		.warn {
-			l.warn_.wg.wait() 
+			l.warn_.wg.wait()
 		}
 		.alert {
-			l.alert_.wg.wait() 
+			l.alert_.wg.wait()
 		}
 		.error {
-			l.error_.wg.wait() 
+			l.error_.wg.wait()
 		}
 		.fatal {
-			l.fatal_.wg.wait() 
+			l.fatal_.wg.wait()
 		}
 	}
 }
@@ -75,6 +75,7 @@ pub fn (mut l FileLog) flush_all() {
 	l.error_.ofile.flush()
 	l.fatal_.ofile.flush()
 }
+
 pub fn (mut l FileLog) flush(level LogLevel) {
 	match level {
 		.trace {
@@ -104,10 +105,10 @@ pub fn (mut l FileLog) flush(level LogLevel) {
 	}
 }
 
-pub fn  (mut l FileLog) ensure(level LogLevel) {
+pub fn (mut l FileLog) ensure(level LogLevel) {
 	match level {
 		.trace {
-			l.trace_.wg.wait() 
+			l.trace_.wg.wait()
 			l.trace_.ofile.flush()
 		}
 		.debug {
@@ -141,7 +142,7 @@ pub fn  (mut l FileLog) ensure(level LogLevel) {
 	}
 }
 
-pub fn (mut l FileLog) set_level_rotation_output_dir(level LogLevel, dir string)! {
+pub fn (mut l FileLog) set_level_rotation_output_dir(level LogLevel, dir string) ! {
 	$for field in FileLog.fields {
 		$if field.is_struct {
 			$if field.typ is logx.LevelInfo {
@@ -152,7 +153,8 @@ pub fn (mut l FileLog) set_level_rotation_output_dir(level LogLevel, dir string)
 		}
 	}
 }
-pub fn (mut l FileLog) set_all_rotation_output_dir(dir string)! {
+
+pub fn (mut l FileLog) set_all_rotation_output_dir(dir string) ! {
 	$for field in FileLog.fields {
 		$if field.is_struct {
 			$if field.typ is logx.LevelInfo {
