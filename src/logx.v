@@ -15,13 +15,14 @@ pub fn default_formatter(s string, tag string) string {
 
 pub struct LevelInfo{
 pub mut:
-	formatter	FormatterFunc = default_formatter
-	worker		WorkerFunc = listen_file_channel
-	wg			&sync.WaitGroup = sync.new_waitgroup()
-	ofile		os.File
-	ch			chan string
-	file_path	string
-	max_size	u64
-	priority 	int
-	name 		string
+	formatter				FormatterFunc = default_formatter
+	worker					WorkerFunc = listen_file_channel
+	wg						&sync.WaitGroup = sync.new_waitgroup()
+	ofile					os.File
+	ch						chan string
+	file_path				string
+	rotation_output_dir 	string
+	max_size				u64
+	priority 				int
+	name 					string
 }

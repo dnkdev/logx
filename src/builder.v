@@ -2,6 +2,7 @@ module logx
 
 import os
 import time
+import sync
 
 // from_new create logger from custom struct
 pub fn from_new[T](log T) !&T {
@@ -9,6 +10,7 @@ pub fn from_new[T](log T) !&T {
 	mut paths := []string{}
 	mut ofiles := []&os.File{}
 	mut chanells := []&chan string{}
+	mut wgs := []&sync.WaitGroup{}
 	mut rotation := ''
 	mut has_log_day := false
 	// check rotation attribute set
@@ -49,6 +51,7 @@ pub fn from_new[T](log T) !&T {
 				}
 			}
 			path := logger.$(field.name).file_path
+			logger.$(field.name).rotation_output_dir = os.dir(path)
 
 			create_logger_dir_path(path)
 
@@ -58,6 +61,7 @@ pub fn from_new[T](log T) !&T {
 					if paths[a] == path {
 						logger.$(field.name).ofile = ofile
 						logger.$(field.name).ch = chanells[a]
+						logger.$(field.name).wg = wgs[a]
 					}
 				}
 			}
@@ -70,6 +74,7 @@ pub fn from_new[T](log T) !&T {
 
 				ofiles << &logger.$(field.name).ofile
 				chanells << &logger.$(field.name).ch
+				wgs << logger.$(field.name).wg
 
 				spawn logger.$(field.name).worker(mut &logger.$(field.name))
 			}

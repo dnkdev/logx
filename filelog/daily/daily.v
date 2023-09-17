@@ -141,6 +141,27 @@ pub fn  (mut l FileLog) ensure(level LogLevel) {
 	}
 }
 
+pub fn (mut l FileLog) set_level_rotation_output_dir(level LogLevel, dir string)! {
+	$for field in FileLog.fields {
+		$if field.is_struct {
+			$if field.typ is logx.LevelInfo {
+				if l.$(field.name).priority == int(level) {
+					logx.set_rotation_outputdir(mut l.$(field.name), dir)!
+				}
+			}
+		}
+	}
+}
+pub fn (mut l FileLog) set_all_rotation_output_dir(dir string)! {
+	$for field in FileLog.fields {
+		$if field.is_struct {
+			$if field.typ is logx.LevelInfo {
+				logx.set_rotation_outputdir(mut l.$(field.name), dir)!
+			}
+		}
+	}
+}
+
 pub fn (mut l FileLog) trace(s string) {
 	if l.log_level > int(LogLevel.trace) {
 		return

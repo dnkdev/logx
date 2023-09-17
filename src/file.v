@@ -25,9 +25,10 @@ fn listen_file_channel(mut log_info LevelInfo) {
 	}
 }
 
+// get_daily_file_path get file path with name in daily format `year_month_day`
 fn get_daily_file_path(path string) string {
 	ext := os.file_ext(path)
-	return path.all_before('.') + '-' + time.now().ymmdd() + ext
+	return path.all_before_last('.') + '-' + time.now().ymmdd() + ext
 }
 
 pub fn send[T](mut logger T, s string) {
