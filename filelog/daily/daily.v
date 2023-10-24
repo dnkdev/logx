@@ -232,5 +232,5 @@ pub fn (mut l FileLog) fatal(s string) {
 }
 
 pub fn new() !&FileLog {
-	return logx.from_new(FileLog{})!
+	return logx.from_new[FileLog]()!
 }

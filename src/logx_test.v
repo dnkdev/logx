@@ -15,7 +15,7 @@ struct MyLog{
 
 
 fn test_from_new()!{
-	mut l := from_new(MyLog{})!
+	mut l := from_new[MyLog]()!
 	path := 'test__logs/info/test.log'
 	//dump(l)
 	assert l.debug.ch.cap == 10000

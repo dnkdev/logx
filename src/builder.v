@@ -5,7 +5,7 @@ import time
 import sync
 
 // from_new create logger from custom struct
-pub fn from_new[T](log T) !&T {
+pub fn from_new[T]() !&T {
 	mut logger := &T{}
 	mut paths := []string{}
 	mut ofiles := []&os.File{}

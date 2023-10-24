@@ -104,6 +104,11 @@ pub fn (mut l FileLog) flush(level LogLevel) {
 	}
 }
 
+pub fn (mut l FileLog) ensure_all() {
+	l.wait_all()
+	l.flush_all()
+}
+
 pub fn (mut l FileLog) ensure(level LogLevel) {
 	match level {
 		.trace {
@@ -231,10 +236,8 @@ pub fn (mut l FileLog) error(s string) {
 	logx.send(mut l.error_, l.error_.formatter(s, 'ERROR'))
 }
 
+[noreturn]
 pub fn (mut l FileLog) fatal(s string) {
-	if l.log_level > int(LogLevel.fatal) {
-		return
-	}
 	logx.check_level_size_rotation(mut l.fatal_)
 	logx.send(mut l.fatal_, l.fatal_.formatter(s, 'FATAL'))
 	logx.wait(mut l)
@@ -243,5 +246,5 @@ pub fn (mut l FileLog) fatal(s string) {
 }
 
 pub fn new() !&FileLog {
-	return logx.from_new(FileLog{})!
+	return logx.from_new[FileLog]()!
 }
